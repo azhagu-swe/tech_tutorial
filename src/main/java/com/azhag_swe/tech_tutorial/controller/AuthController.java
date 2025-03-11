@@ -3,9 +3,11 @@ package com.azhag_swe.tech_tutorial.controller;
 import com.azhag_swe.tech_tutorial.dto.request.LoginRequest;
 import com.azhag_swe.tech_tutorial.dto.request.SignupRequest;
 import com.azhag_swe.tech_tutorial.dto.request.TokenRefreshRequest;
+import com.azhag_swe.tech_tutorial.dto.response.ErrorResponse;
 import com.azhag_swe.tech_tutorial.dto.response.JwtResponse;
 import com.azhag_swe.tech_tutorial.dto.response.MessageResponse;
 import com.azhag_swe.tech_tutorial.dto.response.TokenRefreshResponse;
+import com.azhag_swe.tech_tutorial.exception.ResourceNotFoundException;
 import com.azhag_swe.tech_tutorial.model.entity.RefreshToken;
 import com.azhag_swe.tech_tutorial.model.entity.Role;
 import com.azhag_swe.tech_tutorial.model.entity.User;
@@ -74,16 +76,16 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+        // Check if username exists
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
+            return ResponseEntity.badRequest()
+                    .body(new ErrorResponse("AUTH004", "Username is already taken!"));
         }
 
+        // Check if email exists
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Email is already in use!"));
+            return ResponseEntity.badRequest()
+                    .body(new ErrorResponse("AUTH005", "Email is already in use!"));
         }
 
         // Create new user account
@@ -96,21 +98,21 @@ public class AuthController {
         Set<Role> roles = new HashSet<>();
 
         if (strRoles == null || strRoles.isEmpty()) {
+            // Use default role "ROLE_USER"
             Role userRole = roleRepository.findByName("ROLE_USER")
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    .orElseThrow(() -> new ResourceNotFoundException("Role", "name", "ROLE_USER"));
             roles.add(userRole);
         } else {
+            // Iterate over provided roles and add corresponding Role entities
             strRoles.forEach(role -> {
-                switch (role.toLowerCase()) {
-                    case "admin":
-                        Role adminRole = roleRepository.findByName("Admin")
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(adminRole);
-                        break;
-                    default:
-                        Role userRole = roleRepository.findByName("ROLE_USER")
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(userRole);
+                if ("admin".equalsIgnoreCase(role)) {
+                    Role adminRole = roleRepository.findByName("ROLE_ADMIN")
+                            .orElseThrow(() -> new ResourceNotFoundException("Role", "name", role));
+                    roles.add(adminRole);
+                } else {
+                    Role userRole = roleRepository.findByName("ROLE_USER")
+                            .orElseThrow(() -> new ResourceNotFoundException("Role", "name", role));
+                    roles.add(userRole);
                 }
             });
         }

@@ -19,8 +19,8 @@ public class SwaggerConfig {
                         .description("API documentation for the Tech Tutorials application")
                         .contact(new Contact()
                                 .name("Your Name")
-                                .email("your_email@example.com")
-                                .url("https://yourwebsite.com"))
+                                .email("azhagu.swe@gmail.com")
+                                .url("https://azhagu_tech.com"))
                         .license(new License()
                                 .name("Apache 2.0")
                                 .url("http://springdoc.org")));
