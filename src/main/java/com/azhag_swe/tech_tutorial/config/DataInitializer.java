@@ -56,11 +56,13 @@ public class DataInitializer {
 
     private void createTechAdminUser() {
         String defaultUsername = "tech_admin";
+        String defaultEmail="tech@gmail.com";
         String defaultPassword = "TechAdmin@123";
 
         if (userRepository.findByUsername(defaultUsername).isEmpty()) {
             User techAdmin = new User();
             techAdmin.setUsername(defaultUsername);
+            techAdmin.setEmail(defaultEmail);
             techAdmin.setPassword(passwordEncoder.encode(defaultPassword));
             techAdmin.setRoles(Set.of(roleRepository.findByName("Tech_admin").orElseThrow(() -> 
                 new RuntimeException("Tech_admin role not found in the database"))));
