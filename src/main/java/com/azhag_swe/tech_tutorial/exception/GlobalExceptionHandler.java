@@ -15,19 +15,18 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleApplicationException(ApplicationException ex) {
         ErrorResponse errorResponse = new ErrorResponse(
                 ex.getErrorCode().getCode(),
-                ex.getMessage()
-        );
+                ex.getMessage());
         // You might choose a specific HTTP status based on the error code.
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     // Handle validation exceptions (example for MethodArgumentNotValidException)
     @ExceptionHandler(org.springframework.web.bind.MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> handleValidationExceptions(org.springframework.web.bind.MethodArgumentNotValidException ex) {
+    public ResponseEntity<ErrorResponse> handleValidationExceptions(
+            org.springframework.web.bind.MethodArgumentNotValidException ex) {
         ErrorResponse errorResponse = new ErrorResponse(
                 ErrorCode.VALIDATION_FAILED.getCode(),
-                ErrorCode.VALIDATION_FAILED.getMessage()
-        );
+                ErrorCode.VALIDATION_FAILED.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
@@ -38,8 +37,7 @@ public class GlobalExceptionHandler {
         // logger.error("Unhandled exception", ex);
         ErrorResponse errorResponse = new ErrorResponse(
                 ErrorCode.INTERNAL_ERROR.getCode(),
-                ErrorCode.INTERNAL_ERROR.getMessage()
-        );
+                ErrorCode.INTERNAL_ERROR.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

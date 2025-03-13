@@ -26,14 +26,16 @@ public class JwtUtils {
 
     @PostConstruct
     public void init() {
-        // Check if the provided secret is long enough for HS512 (>=512 bits, i.e., at least 64 bytes)
+        // Check if the provided secret is long enough for HS512 (>=512 bits, i.e., at
+        // least 64 bytes)
         if (jwtSecret == null || jwtSecret.trim().isEmpty() ||
-            jwtSecret.getBytes(StandardCharsets.UTF_8).length < 64) {
+                jwtSecret.getBytes(StandardCharsets.UTF_8).length < 64) {
             // Generate a secure key using the library's secretKeyFor method
             key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
             System.out.println("Generated secure key: " + key);
         } else {
-            // Use the provided secret; Keys.hmacShaKeyFor will throw an exception if it's too short.
+            // Use the provided secret; Keys.hmacShaKeyFor will throw an exception if it's
+            // too short.
             key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
         }
     }
@@ -41,36 +43,37 @@ public class JwtUtils {
     public String generateJwtToken(Authentication authentication) {
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
         return Jwts.builder()
-                   .setSubject(userPrincipal.getUsername())
-                   .setIssuedAt(new Date())
-                   .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-                   .signWith(key, SignatureAlgorithm.HS512)
-                   .compact();
+                .setSubject(userPrincipal.getUsername())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+                .signWith(key, SignatureAlgorithm.HS512)
+                .compact();
     }
 
     public String getUserNameFromJwtToken(String token) {
         return Jwts.parserBuilder()
-                   .setSigningKey(key)
-                   .build()
-                   .parseClaimsJws(token)
-                   .getBody()
-                   .getSubject();
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
+
     public String generateJwtTokenForUser(UserDetailsImpl userDetails) {
         return Jwts.builder()
-                   .setSubject(userDetails.getUsername())
-                   .setIssuedAt(new Date())
-                   .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-                   .signWith(key, SignatureAlgorithm.HS512)
-                   .compact();
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+                .signWith(key, SignatureAlgorithm.HS512)
+                .compact();
     }
 
     public boolean validateJwtToken(String authToken) {
         try {
             Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(authToken);
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(authToken);
             return true;
         } catch (JwtException e) {
             // Log the exception if needed

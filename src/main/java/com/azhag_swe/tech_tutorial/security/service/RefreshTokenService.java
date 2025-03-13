@@ -2,7 +2,6 @@ package com.azhag_swe.tech_tutorial.security.service;
 
 import com.azhag_swe.tech_tutorial.model.entity.RefreshToken;
 import com.azhag_swe.tech_tutorial.repository.RefreshTokenRepository;
-import com.azhag_swe.tech_tutorial.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +10,6 @@ import java.security.SecureRandom;
 import java.time.Instant;
 import java.util.Base64;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class RefreshTokenService {
