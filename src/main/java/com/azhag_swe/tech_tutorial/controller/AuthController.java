@@ -1,6 +1,8 @@
 package com.azhag_swe.tech_tutorial.controller;
 
+import com.azhag_swe.tech_tutorial.dto.request.ForgotPasswordRequest;
 import com.azhag_swe.tech_tutorial.dto.request.LoginRequest;
+import com.azhag_swe.tech_tutorial.dto.request.ResetPasswordRequest;
 import com.azhag_swe.tech_tutorial.dto.request.SignupRequest;
 import com.azhag_swe.tech_tutorial.dto.request.TokenRefreshRequest;
 import com.azhag_swe.tech_tutorial.dto.response.ErrorResponse;
@@ -8,6 +10,7 @@ import com.azhag_swe.tech_tutorial.dto.response.JwtResponse;
 import com.azhag_swe.tech_tutorial.dto.response.MessageResponse;
 import com.azhag_swe.tech_tutorial.dto.response.TokenRefreshResponse;
 import com.azhag_swe.tech_tutorial.exception.ResourceNotFoundException;
+import com.azhag_swe.tech_tutorial.model.entity.PasswordResetToken;
 import com.azhag_swe.tech_tutorial.model.entity.RefreshToken;
 import com.azhag_swe.tech_tutorial.model.entity.Role;
 import com.azhag_swe.tech_tutorial.model.entity.User;
@@ -16,6 +19,8 @@ import com.azhag_swe.tech_tutorial.repository.UserRepository;
 import com.azhag_swe.tech_tutorial.security.jwt.JwtUtils;
 import com.azhag_swe.tech_tutorial.security.service.RefreshTokenService;
 import com.azhag_swe.tech_tutorial.security.service.UserDetailsImpl;
+import com.azhag_swe.tech_tutorial.service.EmailService;
+import com.azhag_swe.tech_tutorial.service.PasswordResetService;
 
 import jakarta.validation.Valid;
 import java.util.*;
@@ -48,6 +53,13 @@ public class AuthController {
     JwtUtils jwtUtils;
     @Autowired
     private RefreshTokenService refreshTokenService;
+
+    // Add these new dependencies
+    @Autowired
+    private PasswordResetService passwordResetService;
+
+    @Autowired
+    private EmailService emailService;
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -166,6 +178,30 @@ public class AuthController {
             return ResponseEntity.badRequest()
                     .body(new TokenRefreshResponse("", "Refresh token is not in database!"));
         }
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new ResourceNotFoundException("User", "email", request.getEmail()));
+
+        PasswordResetToken resetToken = passwordResetService.createPasswordResetTokenForUser(user);
+        emailService.sendPasswordResetEmail(user.getEmail(), resetToken.getToken());
+
+        return ResponseEntity.ok(new MessageResponse("Password reset instructions sent to your email"));
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+        PasswordResetToken token = passwordResetService.validatePasswordResetToken(request.getToken());
+
+        User user = token.getUser();
+        user.setPassword(encoder.encode(request.getNewPassword()));
+        userRepository.save(user);
+
+        passwordResetService.deleteToken(token);
+
+        return ResponseEntity.ok(new MessageResponse("Password reset successfully"));
     }
 
 }
