@@ -1,6 +1,8 @@
 package com.azhag_swe.tech_tutorial.controller;
 
+import com.azhag_swe.tech_tutorial.dto.request.ForgotPasswordRequest;
 import com.azhag_swe.tech_tutorial.dto.request.LoginRequest;
+import com.azhag_swe.tech_tutorial.dto.request.ResetPasswordRequest;
 import com.azhag_swe.tech_tutorial.dto.request.SignupRequest;
 import com.azhag_swe.tech_tutorial.dto.request.TokenRefreshRequest;
 import com.azhag_swe.tech_tutorial.dto.response.ErrorResponse;
@@ -8,6 +10,7 @@ import com.azhag_swe.tech_tutorial.dto.response.JwtResponse;
 import com.azhag_swe.tech_tutorial.dto.response.MessageResponse;
 import com.azhag_swe.tech_tutorial.dto.response.TokenRefreshResponse;
 import com.azhag_swe.tech_tutorial.exception.ResourceNotFoundException;
+import com.azhag_swe.tech_tutorial.model.entity.PasswordResetToken;
 import com.azhag_swe.tech_tutorial.model.entity.RefreshToken;
 import com.azhag_swe.tech_tutorial.model.entity.Role;
 import com.azhag_swe.tech_tutorial.model.entity.User;
@@ -16,6 +19,7 @@ import com.azhag_swe.tech_tutorial.repository.UserRepository;
 import com.azhag_swe.tech_tutorial.security.jwt.JwtUtils;
 import com.azhag_swe.tech_tutorial.security.service.RefreshTokenService;
 import com.azhag_swe.tech_tutorial.security.service.UserDetailsImpl;
+import com.azhag_swe.tech_tutorial.service.PasswordResetService;
 
 import jakarta.validation.Valid;
 import java.util.*;
@@ -46,8 +50,12 @@ public class AuthController {
 
     @Autowired
     JwtUtils jwtUtils;
+
     @Autowired
     private RefreshTokenService refreshTokenService;
+
+    @Autowired
+    private PasswordResetService passwordResetService;
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -106,7 +114,7 @@ public class AuthController {
             // Iterate over provided roles and add corresponding Role entities
             strRoles.forEach(role -> {
                 if ("admin".equalsIgnoreCase(role)) {
-                    Role adminRole = roleRepository.findByName("ROLE_ADMIN")
+                    Role adminRole = roleRepository.findByName("Admin")
                             .orElseThrow(() -> new ResourceNotFoundException("Role", "name", role));
                     roles.add(adminRole);
                 } else {
@@ -167,5 +175,48 @@ public class AuthController {
                     .body(new TokenRefreshResponse("", "Refresh token is not in database!"));
         }
     }
+
+    /**
+     * Endpoint to initiate the password reset process.
+     * Expects a JSON payload with the user's email.
+     */
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+        try {
+            passwordResetService.createPasswordResetToken(request.getEmail());
+            return ResponseEntity.ok(new MessageResponse("Password reset email sent."));
+        } catch (RuntimeException ex) {
+            return ResponseEntity.badRequest().body(new ErrorResponse("ERR_FORGOT", ex.getMessage()));
+        }
+    } 
+
+    /**
+     * Endpoint to reset the password.
+     * Expects a JSON payload with the reset token and the new password.
+     */
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+        try {
+            // Validate the reset token and get the associated user.
+            PasswordResetToken resetToken = passwordResetService.validatePasswordResetToken(request.getToken());
+            User user = resetToken.getUser();
+    
+            // Update the user's password (using the same encoder as signup)
+            String password =encoder.encode(request.getNewPassword());
+            user.setPassword(encoder.encode(request.getNewPassword()));
+            userRepository.save(user);
+    
+            // Optionally, delete the used reset token to prevent reuse.
+            passwordResetService.deleteToken(resetToken);
+    
+            // Clear the security context to force a fresh login with the new password.
+            SecurityContextHolder.clearContext();
+    
+            return ResponseEntity.ok(new MessageResponse("Password reset successfully."));
+        } catch (RuntimeException ex) {
+            return ResponseEntity.badRequest().body(new ErrorResponse("ERR_RESET", ex.getMessage()));
+        }
+    }
+    
 
 }
