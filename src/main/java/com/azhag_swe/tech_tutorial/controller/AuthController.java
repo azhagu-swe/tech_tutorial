@@ -106,7 +106,7 @@ public class AuthController {
             // Iterate over provided roles and add corresponding Role entities
             strRoles.forEach(role -> {
                 if ("admin".equalsIgnoreCase(role)) {
-                    Role adminRole = roleRepository.findByName("ROLE_ADMIN")
+                    Role adminRole = roleRepository.findByName("Admin")
                             .orElseThrow(() -> new ResourceNotFoundException("Role", "name", role));
                     roles.add(adminRole);
                 } else {
