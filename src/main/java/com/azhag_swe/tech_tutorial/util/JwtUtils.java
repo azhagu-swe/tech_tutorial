@@ -1,4 +1,4 @@
-package com.azhag_swe.tech_tutorial.security.jwt;
+package com.azhag_swe.tech_tutorial.util;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;

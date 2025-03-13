@@ -16,11 +16,11 @@ import com.azhag_swe.tech_tutorial.model.entity.Role;
 import com.azhag_swe.tech_tutorial.model.entity.User;
 import com.azhag_swe.tech_tutorial.repository.RoleRepository;
 import com.azhag_swe.tech_tutorial.repository.UserRepository;
-import com.azhag_swe.tech_tutorial.security.jwt.JwtUtils;
 import com.azhag_swe.tech_tutorial.security.service.RefreshTokenService;
 import com.azhag_swe.tech_tutorial.security.service.UserDetailsImpl;
 import com.azhag_swe.tech_tutorial.service.EmailService;
 import com.azhag_swe.tech_tutorial.service.PasswordResetService;
+import com.azhag_swe.tech_tutorial.util.JwtUtils;
 
 import jakarta.validation.Valid;
 import java.util.*;

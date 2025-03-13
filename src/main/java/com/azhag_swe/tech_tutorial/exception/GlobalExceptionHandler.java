@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.azhag_swe.tech_tutorial.dto.response.ErrorResponse;
+import com.azhag_swe.tech_tutorial.enumeration.ErrorCode;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {

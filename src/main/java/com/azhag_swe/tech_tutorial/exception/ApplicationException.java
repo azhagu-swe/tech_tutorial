@@ -1,5 +1,6 @@
 package com.azhag_swe.tech_tutorial.exception;
 
+import com.azhag_swe.tech_tutorial.enumeration.ErrorCode;
 
 public class ApplicationException extends RuntimeException {
 

@@ -1,4 +1,4 @@
-package com.azhag_swe.tech_tutorial.exception;
+package com.azhag_swe.tech_tutorial.enumeration;
 
 
 public enum ErrorCode {
