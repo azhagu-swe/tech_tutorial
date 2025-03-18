@@ -1,7 +1,8 @@
 package com.azhag_swe.tech_tutorial.security.service;
 
 import com.azhag_swe.tech_tutorial.model.entity.RefreshToken;
-import com.azhag_swe.tech_tutorial.repository.RefreshTokenRepository;
+import com.azhag_swe.tech_tutorial.model.repository.RefreshTokenRepository;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

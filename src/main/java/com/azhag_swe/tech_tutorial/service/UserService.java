@@ -5,8 +5,9 @@ import com.azhag_swe.tech_tutorial.dto.request.UpdateUserRolesRequest;
 import com.azhag_swe.tech_tutorial.dto.response.UserResponse;
 import com.azhag_swe.tech_tutorial.model.entity.Role;
 import com.azhag_swe.tech_tutorial.model.entity.User;
-import com.azhag_swe.tech_tutorial.repository.RoleRepository;
-import com.azhag_swe.tech_tutorial.repository.UserRepository;
+import com.azhag_swe.tech_tutorial.model.repository.RoleRepository;
+import com.azhag_swe.tech_tutorial.model.repository.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

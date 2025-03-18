@@ -1,4 +1,4 @@
-package com.azhag_swe.tech_tutorial.repository;
+package com.azhag_swe.tech_tutorial.model.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

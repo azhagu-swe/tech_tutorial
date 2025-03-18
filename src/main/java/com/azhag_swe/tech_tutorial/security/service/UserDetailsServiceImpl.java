@@ -1,7 +1,8 @@
 package com.azhag_swe.tech_tutorial.security.service;
 
 import com.azhag_swe.tech_tutorial.model.entity.User; // Ensure this is your custom User entity!
-import com.azhag_swe.tech_tutorial.repository.UserRepository;
+import com.azhag_swe.tech_tutorial.model.repository.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

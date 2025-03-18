@@ -2,7 +2,8 @@ package com.azhag_swe.tech_tutorial.service;
 
 import com.azhag_swe.tech_tutorial.model.entity.PasswordResetToken;
 import com.azhag_swe.tech_tutorial.model.entity.User;
-import com.azhag_swe.tech_tutorial.repository.PasswordResetTokenRepository;
+import com.azhag_swe.tech_tutorial.model.repository.PasswordResetTokenRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

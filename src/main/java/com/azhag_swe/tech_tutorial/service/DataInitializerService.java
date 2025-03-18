@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 import com.azhag_swe.tech_tutorial.exception.ResourceNotFoundException;
 import com.azhag_swe.tech_tutorial.model.entity.Role;
 import com.azhag_swe.tech_tutorial.model.entity.User;
-import com.azhag_swe.tech_tutorial.repository.RoleRepository;
-import com.azhag_swe.tech_tutorial.repository.UserRepository;
+import com.azhag_swe.tech_tutorial.model.repository.RoleRepository;
+import com.azhag_swe.tech_tutorial.model.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
 

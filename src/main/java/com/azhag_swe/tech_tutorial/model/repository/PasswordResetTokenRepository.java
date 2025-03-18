@@ -1,4 +1,4 @@
-package com.azhag_swe.tech_tutorial.repository;
+package com.azhag_swe.tech_tutorial.model.repository;
 
 import com.azhag_swe.tech_tutorial.model.entity.PasswordResetToken;
 import com.azhag_swe.tech_tutorial.model.entity.User;
