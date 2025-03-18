@@ -1,5 +1,6 @@
 package com.azhag_swe.tech_tutorial.config;
 
+import com.azhag_swe.tech_tutorial.filter.RateLimitingFilter;
 import com.azhag_swe.tech_tutorial.security.jwt.JwtAuthenticationFilter;
 
 import jakarta.transaction.Transactional;
@@ -29,6 +30,7 @@ public class SecurityConfig {
 
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final RateLimitingFilter rateLimitingFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -43,6 +45,9 @@ public class SecurityConfig {
                 );
         // Remove httpBasic() to prevent basic auth prompt:
         // .httpBasic(Customizer.withDefaults());
+
+        // Add rate limiting filter
+        http.addFilterBefore(rateLimitingFilter, UsernamePasswordAuthenticationFilter.class);
 
         // Register JWT filter if applicable
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
