@@ -124,6 +124,19 @@
 			<version>2.0.1</version>
 		</dependency>
 
+		<!-- For auditing -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-envers</artifactId>
+		</dependency>
+
+		<!-- Rate limiting -->
+		<dependency>
+			<groupId>com.giffing.bucket4j.spring.boot.starter</groupId>
+			<artifactId>bucket4j-spring-boot-starter</artifactId>
+			<version>0.5.2</version>
+		</dependency>
+
 
 	</dependencies>
 

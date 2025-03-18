@@ -1,13 +1,17 @@
 package com.azhag_swe.tech_tutorial.model.entity;
 
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
 
 @Entity
-public class Permission {
+@EntityListeners(AuditingEntityListener.class)
+public class Permission extends Auditable {
     @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -5,8 +5,11 @@ import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 @Entity
-public class Role {
+@EntityListeners(AuditingEntityListener.class)
+public class Role extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -77,6 +77,7 @@ public class JwtUtils {
             return true;
         } catch (JwtException e) {
             // Log the exception if needed
+            System.out.println("Invalid JWT token: " + e.getMessage());
         }
         return false;
     }

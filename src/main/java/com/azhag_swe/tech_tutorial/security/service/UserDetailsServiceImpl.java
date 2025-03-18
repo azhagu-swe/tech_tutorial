@@ -15,13 +15,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // Fetch your custom User entity from the repository
-        User user = userRepository.findByUsername(username)
+        // Use the method that fetches roles eagerly.
+        User user = userRepository.findByUsernameWithRoles(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
-
-        // Build a UserDetails instance from your custom User entity
         return UserDetailsImpl.build(user);
     }
 }
