@@ -7,8 +7,6 @@ import java.util.Set;
 
 @Data
 public class UpdateUserRequest {
-    // Optional fields (only non-null fields will be updated)
-    
     private String username;
 
     @Email(message = "Email must be valid")

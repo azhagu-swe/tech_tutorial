@@ -3,18 +3,16 @@ package com.azhag_swe.tech_tutorial.controller;
 import com.azhag_swe.tech_tutorial.dto.request.*;
 import com.azhag_swe.tech_tutorial.service.AuthService;
 import jakarta.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-
-    private final AuthService authService;
-
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
+    @Autowired
+    private AuthService authService;
 
     @PostMapping("/signin")
     public ResponseEntity<?> signIn(@Valid @RequestBody LoginRequest loginRequest) {

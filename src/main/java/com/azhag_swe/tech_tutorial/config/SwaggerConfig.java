@@ -34,7 +34,7 @@ public class SwaggerConfig {
                                                 .version("1.0")
                                                 .description("API documentation for the Tech Tutorials application")
                                                 .contact(new Contact()
-                                                                .name("Your Name")
+                                                                .name("Azhagu")
                                                                 .email("azhagu.swe@gmail.com")
                                                                 .url("https://azhagu_tech.com"))
                                                 .license(new License()

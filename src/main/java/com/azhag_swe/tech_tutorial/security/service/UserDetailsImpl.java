@@ -92,7 +92,4 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    // Additional getters for id and email if needed
-}
+    }}

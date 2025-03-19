@@ -5,9 +5,12 @@ import com.azhag_swe.tech_tutorial.dto.request.RoleRequest;
 import com.azhag_swe.tech_tutorial.dto.response.ErrorResponse;
 import com.azhag_swe.tech_tutorial.dto.response.RoleResponse;
 import com.azhag_swe.tech_tutorial.exception.ResourceNotFoundException;
+import com.azhag_swe.tech_tutorial.mapper.RoleMapper;
 import com.azhag_swe.tech_tutorial.service.RoleService;
-import com.azhag_swe.tech_tutorial.util.RoleMapper;
+
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -17,13 +20,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/roles")
+@RequiredArgsConstructor
 public class RoleController {
 
     private final RoleService roleService;
-
-    public RoleController(RoleService roleService) {
-        this.roleService = roleService;
-    }
 
     @GetMapping
     @PreAuthorize("hasAnyAuthority('Admin', 'Manager')")

@@ -36,7 +36,6 @@ public class PasswordResetToken {
         this.expiryDate = calculateExpiryDate();
     }
 
-    // Getters and Setters
     private Date calculateExpiryDate() {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.HOUR, EXPIRATION_HOURS);

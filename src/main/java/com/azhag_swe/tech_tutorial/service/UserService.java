@@ -4,9 +4,10 @@ import com.azhag_swe.tech_tutorial.dto.request.CreateUserRequest;
 import com.azhag_swe.tech_tutorial.dto.request.UpdateUserRequest;
 import com.azhag_swe.tech_tutorial.dto.response.UserResponse;
 import com.azhag_swe.tech_tutorial.exception.ResourceNotFoundException;
+import com.azhag_swe.tech_tutorial.mapper.UserMapper;
 import com.azhag_swe.tech_tutorial.model.entity.User;
 import com.azhag_swe.tech_tutorial.model.entity.Role;
-import com.azhag_swe.tech_tutorial.util.UserMapper;
+
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package com.azhag_swe.tech_tutorial.util;
+package com.azhag_swe.tech_tutorial.mapper;
 
 import com.azhag_swe.tech_tutorial.dto.request.RoleRequest;
 import com.azhag_swe.tech_tutorial.dto.response.RoleResponse;
