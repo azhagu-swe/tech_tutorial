@@ -21,6 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -31,25 +32,25 @@ public class SecurityConfig {
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
     private final RateLimitingFilter rateLimitingFilter;
+    private final CorsConfigurationSource corsConfigurationSource;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                // Configure CORS using the lambda DSL with your CorsConfigurationSource
+                .cors(cors -> cors.configurationSource(corsConfigurationSource))
+                // Disable CSRF for stateless JWT-based APIs
                 .csrf(csrf -> csrf.disable())
+                // Set session management to stateless
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                // Configure request authorization
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .anyRequest().authenticated());
 
-                        .anyRequest().authenticated()
-
-                );
-        // Remove httpBasic() to prevent basic auth prompt:
-        // .httpBasic(Customizer.withDefaults());
-
-        // Add rate limiting filter
+        // Add the rate limiting filter (applied before the JWT filter)
         http.addFilterBefore(rateLimitingFilter, UsernamePasswordAuthenticationFilter.class);
-
-        // Register JWT filter if applicable
+        // Add the JWT authentication filter
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
