@@ -8,7 +8,6 @@ import com.azhag_swe.tech_tutorial.exception.ResourceNotFoundException;
 import com.azhag_swe.tech_tutorial.service.RoleService;
 import com.azhag_swe.tech_tutorial.util.RoleMapper;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -22,7 +21,6 @@ public class RoleController {
 
     private final RoleService roleService;
 
-    @Autowired
     public RoleController(RoleService roleService) {
         this.roleService = roleService;
     }

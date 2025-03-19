@@ -17,6 +17,6 @@ public class TechTutorialApplication {
 
     @Bean
     public AuditorAware<String> auditorAware() {
-        return () -> Optional.of("SYSTEM"); // Default for initialization
+        return () -> Optional.of("SYSTEM"); 
     }
 }

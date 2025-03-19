@@ -15,4 +15,10 @@ public class ErrorCodeConstants {
     public static final String USER_CREATION_ERROR = "USER_002";
     public static final String USER_UPDATE_ERROR = "USER_003";
     public static final String USER_DELETE_ERROR = "USER_004";
+
+    // Permission error codes
+    public static final String PERMISSION_NOT_FOUND = "PERMISSION_001";
+    public static final String PERMISSION_CREATE_ERROR = "PERMISSION_002";
+    public static final String PERMISSION_UPDATE_ERROR = "PERMISSION_003";
+    public static final String PERMISSION_DELETE_ERROR = "PERMISSION_004";
 }
